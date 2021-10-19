@@ -5,48 +5,82 @@
 //     populates a record from an Array
 //       1) has a function called createEmployeeRecord
 
-let testEmployee = []
+// let employee = { name: 'chris', lastName: 'ninman', timeInEvents: [{
+//   type: 'TimeIn',
+//   hour: 1900,
+//   date: '2021-10-18' 
+// }]}
 
-function createEmployeeRecord(testEmployee){
-  let timeInEvents = [];
-  let timeOutEvents = [];
-  testEmployee = {
-    firstName: ''[0],
-    familyName: ''[1],
-    title: ''[2],
-    payPerHour: [3]
+let empl = {
+  firstName: 'Julius',
+  familyName: 'Caesar',
+  title: 'General',
+  payPerHour: 1000,
+  timeInEvents: [ { type: 'TimeIn', hour: 900, date: '0044-03-15' } ],
+  timeOutEvents: [ { type: 'TimeOut', hour: 1100, date: '0044-03-15' } ]
+}
+
+// let employees = [['chris', 'ninman', 'se', 22], ['anto', 'calarota', 'prof', 35] ['matteo', 'hokusai', 'dancer', 120]]
+
+function createEmployeeRecord(employeeArray){
+  return {
+    firstName: employeeArray[0],
+    familyName: employeeArray[1],
+    title: employeeArray[2],
+    payPerHour: employeeArray[3],
+    timeInEvents: [],
+    timeOutEvents: []
+  }
+  
+}
+
+
+function createEmployeeRecords (arrayOfArrays) {
+  let newArray = arrayOfArrays.map(createEmployeeRecord)
+  return newArray
+}
+
+
+function createTimeInEvent (empRecObj, dateStamp){
+  const timeInObject = {
+    type: 'TimeIn',
+    hour: parseInt(dateStamp.slice(-4)),
+    date: dateStamp.slice(0,10)
+  }
+  empRecObj.timeInEvents.push(timeInObject)
+  return empRecObj
+}
+
+
+function createTimeOutEvent (empRecObj, dateStamp){
+  const timeOutObject = {
+    type: 'TimeOut',
+    hour: parseInt(dateStamp.slice(-4)),
+    date: dateStamp.slice(0,10)
+  }
+  empRecObj.timeOutEvents.push(timeOutObject)
+  return empRecObj
+}
+
+
+
+function hoursWorkedOnDate (empRecObj, dateStamp) {
+  console.log('Record:', empRecObj, 'DS:', dateStamp)
+  if (empRecObj.timeInEvents[0].date === dateStamp) {
+    let timeOut = parseInt(empRecObj.TimeOutEvents[0].hour);
+    let timeIn = parseInt(empRecObj.TimeInEvents[0].hour);
+    return timeOut - timeIn
   }
 }
 
-
-function createEmployeeRecords () {
-
-}
-//       createEmployeeRecord
-//         2) populates a firstName field from the 0th element
-//         3) populates a familyName field from the 1th element
-//         4) populates a title field from the 2th element
-//         5) populates a payPerHour field from the 3th element
-//         6) initializes a field, timeInEvents, to hold an empty Array
-//         7) initializes a field, timeOutEvents, to hold an empty Array
-//     process an Array of Arrays into an Array of employee records
-//       8) has a function called createEmployeeRecords
-//       createEmployeeRecords
-//         9) creates two records
-//         10) correctly assigns the first names
-//         11) creates more than 2 records
-//     it adds a timeIn event Object to an employee's record of timeInEvents when provided an employee record and Date/Time String and returns the updated record
-//       12) has a function called createTimeInEvent
-//       createTimeInEvent
-//         13) creates the correct type
-//         14) extracts the correct date
-//         15) extracts the correct hour
-//     it adds a timeOut event Object to an employee's record of timeOutEvents when provided an employee record and Date/Time String and returns the updated record
-//       16) has a function called createTimeOutEvent
-//       createTimeOutEvent
-//         17) creates the correct type
-//         18) extracts the correct date
-//         19) extracts the correct hour
+// hoursWorkedOnDate
+// Argument(s)
+// An employee record Object
+// A date of the form "YYYY-MM-DD"
+// Returns
+// Hours worked, an Integer
+// Behavior
+// Given a date, find the number of hours elapsed between that date's timeInEvent and timeOutEvent
 //     Given an employee record with a date-matched timeInEvent and timeOutEvent
 //       20) hoursWorkedOnDate calculates the hours worked when given an employee record and a date
 //       hoursWorkedOnDate
