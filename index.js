@@ -11,6 +11,22 @@
 //   date: '2021-10-18' 
 // }]}
 
+let empemp = {
+  firstName: 'Julius',
+  familyName: 'Caesar',
+  title: 'General',
+  payPerHour: 27,
+  timeInEvents: [
+    { type: 'TimeIn', hour: 900, date: '0044-03-14' },
+    { type: 'TimeIn', hour: 900, date: '0044-03-15' }
+  ],
+  timeOutEvents: [
+    { type: 'TimeOut', hour: 2100, date: '0044-03-14' },
+    { type: 'TimeOut', hour: 1100, date: '0044-03-15' }
+  ]
+}
+
+
 let empl = {
   firstName: 'Julius',
   familyName: 'Caesar',
@@ -58,6 +74,7 @@ function createTimeOutEvent (empRecObj, dateStamp){
     hour: parseInt(dateStamp.slice(-4)),
     date: dateStamp.slice(0,10)
   }
+  debugger
   empRecObj.timeOutEvents.push(timeOutObject)
   return empRecObj
 }
@@ -65,26 +82,37 @@ function createTimeOutEvent (empRecObj, dateStamp){
 
 
 function hoursWorkedOnDate (empRecObj, dateStamp) {
-  console.log('Record:', empRecObj, 'DS:', dateStamp)
   if (empRecObj.timeInEvents[0].date === dateStamp) {
-    let timeOut = parseInt(empRecObj.TimeOutEvents[0].hour);
-    let timeIn = parseInt(empRecObj.TimeInEvents[0].hour);
-    return timeOut - timeIn
+    let timeOut = parseInt(empRecObj.timeOutEvents[0].hour);
+    let timeIn = parseInt(empRecObj.timeInEvents[0].hour);
+    return (timeOut - timeIn) /100
   }
 }
 
-// hoursWorkedOnDate
-// Argument(s)
-// An employee record Object
-// A date of the form "YYYY-MM-DD"
-// Returns
-// Hours worked, an Integer
-// Behavior
-// Given a date, find the number of hours elapsed between that date's timeInEvent and timeOutEvent
-//     Given an employee record with a date-matched timeInEvent and timeOutEvent
-//       20) hoursWorkedOnDate calculates the hours worked when given an employee record and a date
-//       hoursWorkedOnDate
-//         21) calculates that the employee worked 2 hours
+
+function wagesEarnedOnDate (empRecObj, dateStamp) {
+  return hoursWorkedOnDate(empRecObj, dateStamp) * empRecObj.payPerHour
+}
+
+function allWagesFor (empRecObj) {
+  let sum = 0
+  let date = ""
+  let wagesPerDate = ""
+  console.log (empRecObj.timeInEvents.length)
+  for (let i = 0; i < empRecObj.timeInEvents.length; i++) {
+    debugger
+    date = empRecObj.timeInEvents[i].date
+    debugger
+    wagesPerDate = wagesEarnedOnDate(empRecObj, date);
+    debugger
+    sum += wagesPerDate;
+    debugger
+  }
+}
+
+
+
+
 //     Given an employee record with a date-matched timeInEvent and timeOutEvent
 //       22) wagesEarnedOnDate multiplies the hours worked by the employee's rate per hour
 //       wagesEarnedOnDate
